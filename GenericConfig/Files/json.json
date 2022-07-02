@@ -1,0 +1,34 @@
+[
+  {
+    "id": 1,
+    "name": "SiteName",
+    "type": "String",
+    "value": "cinviz.com",
+    "isActive": 1,
+    "applicationName": "SERVICE-A"
+  },
+  {
+    "id": 2,
+    "name": "Url",
+    "type": "String",
+    "value": "allyouplay.com",
+    "isActive": 1,
+    "applicationName": "SERVICE-A"
+  },
+  {
+    "id": 3,
+    "name": "MaxRequestLimit",
+    "type": "String",
+    "value": "allyouplay.com",
+    "isActive": 1,
+    "applicationName": "SERVICE-B"
+  },
+  {
+    "id": 4,
+    "name": "BossName",
+    "type": "String",
+    "value": "allyouplay.com",
+    "isActive": 0,
+    "applicationName": "SERVICE-A"
+  }
+]
