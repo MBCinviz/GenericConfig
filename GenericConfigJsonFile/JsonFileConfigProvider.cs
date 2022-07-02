@@ -33,7 +33,6 @@ namespace GenericConfigMsSql
             using (StreamReader reader = File.OpenText(path))
             {
                 return reader.ReadToEnd();
-
             }
         }
     }
