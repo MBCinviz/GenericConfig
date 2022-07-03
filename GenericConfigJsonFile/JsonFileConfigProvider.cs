@@ -23,9 +23,11 @@ namespace GenericConfigMsSql
         {
             string jsonString = ReadJsonFile(_filename);
 
-            var configList = JsonConvert.DeserializeObject<List<ConfigModel>>(jsonString);
+            var configList = JsonConvert.DeserializeObject<List<ConfigModel>>(jsonString)
+                .Where(c => c.ApplicationName.Equals(applicationName))
+                .ToList();
 
-            return configList.ToList();
+            return configList;
         }
 
         protected string ReadJsonFile(string path)

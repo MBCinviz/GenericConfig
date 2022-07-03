@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace GenericConfigCore
@@ -14,26 +15,34 @@ namespace GenericConfigCore
 
         public void AddConfig(ConfigModel configModel)
         {
-            if (IsExist(configModel.Name))
+            if (IsConfigExist(configModel.Name))
             {
                 return;
             }
-            configModel.ApplicationName = this._applicationName;
             _configEditor.AddNewConfig(configModel);
             FetchConfig();
         }
 
         public void UpdateConfig(ConfigModel configModel)
         {
-            configModel.ApplicationName = this._applicationName;
+            if (!IsConfigExist(configModel.Name))
+            {
+                return;
+            }
             _configEditor.UpdateConfig(configModel);
             FetchConfig();
         }
-        public void DeleteConfig(string key)
+
+        public void DeleteConfig(string key, string applicationName)
         {
-            _configEditor.DeleteConfig(key, this._applicationName);
+            if (!IsConfigExist(key))
+            {
+                return;
+            }
+            _configEditor.DeleteConfig(key, applicationName);
             FetchConfig();
         }
+
 
     }
 }

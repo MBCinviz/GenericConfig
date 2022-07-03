@@ -7,5 +7,6 @@ namespace GenericConfigCore
     public interface IConfigProvider
     {
         List<ConfigModel> Provide(string applicationName);
+
     }
 }

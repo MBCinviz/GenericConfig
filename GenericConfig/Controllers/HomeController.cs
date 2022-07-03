@@ -15,14 +15,11 @@ namespace GenericConfig.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private GenericConfigManager configManager;
 
         public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
-        }
-
-        public IActionResult Index()
-        {
 
             //// TODO buraya ayz
             //string connectionString = "asdasd"; // todo read from app config
@@ -33,35 +30,26 @@ namespace GenericConfig.Controllers
             //var configReader = new GenericConfigReader("SERVICE-A", provider, refreshTime);
 
             var editor = new JsonFileConfigEditor(AppDomain.CurrentDomain.BaseDirectory.ToString() + "Files/json.json");
-            var configManager = new GenericConfigManager("SERVICE-A", editor, refreshTime);
-
-
-            var cfg = new ConfigModel()
-            {
-                Id = "13",
-                Name = "TestKey4",
-                Value = "TestValue4",
-                IsActive = true,
-                Type = ConfigTypeEnum.STRING
-            };
-            configManager.AddConfig(cfg);
-            var configValue = configManager.GetValue<string>("TestKey4");
-            var a = configManager.GetConfigDictionary();
-
-            cfg.Value = "TestValue updated4";
-            configManager.UpdateConfig(cfg);
-            var b = configManager.GetConfigDictionary();
-
-            configManager.DeleteConfig("TestKey4");
-            var c = configManager.GetConfigDictionary();
-
-            return View();
+            this.configManager = new GenericConfigManager("SERVICE-A", editor, refreshTime);
 
         }
 
-        public IActionResult Privacy()
+        public IActionResult Index()
         {
-            return View();
+           
+            var model = new HomeViewModel()
+            {
+                ConfigList = configManager.GetConfigList()
+            };
+
+            return View(model);
+
+        }
+
+        public IActionResult Remove(string name)
+        {
+            configManager.DeleteConfig(name, configManager.ApplicationName);
+            return RedirectToAction("index");
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

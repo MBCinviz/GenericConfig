@@ -20,7 +20,7 @@ namespace GenericConfigMsSql
 
         public void DeleteConfig(string key, string applicationName)
         {
-            var sql = "DELETE FROM dbo.config WHERE Name = '" + key + "' AND applicationName = '" + applicationName + "'";
+            var sql = "DELETE FROM dbo.config WHERE Name = '" + key + "'";
             throw new NotImplementedException();
         }
 

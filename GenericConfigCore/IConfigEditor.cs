@@ -12,6 +12,5 @@ namespace GenericConfigCore
 
         void DeleteConfig(string key, string applicationName);
 
-        //void SaveSnapshot(List<ConfigModel> configModels);
     }
 }

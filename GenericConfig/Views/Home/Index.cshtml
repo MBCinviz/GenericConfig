@@ -1,8 +1,45 @@
-﻿@{
+﻿@model HomeViewModel
+@{
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+
+<div>
+
+    <table class="table table-bordered">
+
+        <a class="btn btn-success" href="#"><i class="fa fa-add"></i> Add</a>
+        <hr />
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Value</th>
+                <th>Is Active</th>
+                <th>Application Name</th>
+                <th>#</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (GenericConfigCore.ConfigModel c in Model.ConfigList)
+            {
+                <tr>
+                    <td>@c.Id</td>
+                    <td>@c.Name</td>
+                    <td>@c.Type</td>
+                    <td>@c.Value</td>
+                    <td>@c.IsActive</td>
+                    <td>@c.ApplicationName</td>
+                    <td>
+                        <a class="btn btn-warning btn-sm" href="#"><i class="fa fa-pen"></i></a>
+                        <a class="btn btn-danger text-white btn-sm" href="@Url.Action("remove", "home", new { name=c.Name })"><i class="fa fa-trash"></i></a>
+                    </td>
+                </tr>
+
+            }
+        </tbody>
+    </table>
+
+
 </div>

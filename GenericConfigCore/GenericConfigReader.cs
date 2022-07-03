@@ -8,6 +8,14 @@ namespace GenericConfigCore
 {
     public class GenericConfigReader
     {
+        public string ApplicationName
+        {
+            get
+            {
+                return _applicationName;
+            }
+            private set { }
+        }
         protected string _applicationName;
         protected int _refreshTimerIntervalInMs;
         protected IConfigProvider _configProvider;
@@ -28,7 +36,6 @@ namespace GenericConfigCore
             _configDictionary = ConvertListToDictionary(this._configProvider.Provide(this._applicationName));
         }
 
-
         protected Dictionary<string, ConfigModel> ConvertListToDictionary(List<ConfigModel> configs)
         {
             return configs.ToDictionary(x => x.Name);
@@ -36,14 +43,14 @@ namespace GenericConfigCore
 
         public T GetValue<T>(string key) where T : class
         {
-            if (!IsExist(key))
+            if (!IsConfigExist(key))
             {
                 return null;
             }
 
             var model = this._configDictionary[key];
 
-            if (model == null || !model.IsActive)
+            if (model == null || !model.IsActive || !model.ApplicationName.Equals(this._applicationName))
             {
                 return null;
             }
@@ -66,9 +73,19 @@ namespace GenericConfigCore
             return valueList;
         }
 
-        public bool IsExist(string key)
+        public bool IsConfigExist(string key)
         {
             return _configDictionary.ContainsKey(key);
+        }
+
+        public Dictionary<string, ConfigModel> GetConfigDictionary()
+        {
+            return this._configDictionary;
+        }
+
+        public List<ConfigModel> GetConfigList()
+        {
+            return this._configDictionary.Select(a => a.Value).ToList();
         }
 
         private object ParseValue(ConfigModel configModel)
@@ -83,11 +100,6 @@ namespace GenericConfigCore
                 ConfigTypeEnum.DATETIME => DateTime.Parse(configModel.Value),
                 _ => null,
             };
-        }
-
-        public Dictionary<string, ConfigModel> GetConfigDictionary()
-        {
-            return this._configDictionary;
         }
 
         protected async Task ScheduleForFetch()

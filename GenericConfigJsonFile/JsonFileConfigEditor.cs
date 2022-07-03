@@ -27,14 +27,14 @@ namespace GenericConfigMsSql
         public void DeleteConfig(string key, string applicationName)
         {
             var configList = this.Provide(applicationName);
-            configList.RemoveAll(c => c.Name == key && c.ApplicationName.Equals(applicationName));
+            configList.RemoveAll(c => c.Name.Equals(key) && c.ApplicationName.Equals(applicationName));
             WriteJsonFile(this._filename, configList);
         }
 
         public void UpdateConfig(ConfigModel configModel)
         {
             var configList = this.Provide(configModel.ApplicationName);
-            var index = configList.FindIndex(c => c.Name == configModel.Name && c.ApplicationName.Equals(configModel.ApplicationName));
+            var index = configList.FindIndex(c => c.Name.Equals(configModel.Name) && c.ApplicationName.Equals(configModel.ApplicationName));
             if (index < 0)
             {
                 return;
