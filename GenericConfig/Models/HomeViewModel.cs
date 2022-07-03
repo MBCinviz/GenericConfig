@@ -9,5 +9,7 @@ namespace GenericConfig.Models
     public class HomeViewModel
     {
         public List<ConfigModel> ConfigList { get; set; }
+
+        public bool IsProviderAccessible { get; set; }
     }
 }

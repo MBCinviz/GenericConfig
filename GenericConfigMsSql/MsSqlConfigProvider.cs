@@ -9,11 +9,27 @@ namespace GenericConfigMsSql
 
     public class MsSqlConfigProvider : IConfigProvider
     {
-        private string _connetionString;
+        private string _connectionString;
 
         public MsSqlConfigProvider(string connectionString)
         {
-            this._connetionString = connectionString;
+            this._connectionString = connectionString;
+        }
+
+        public bool IsAccessible()
+        {
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            {
+                try
+                {
+                    connection.Open();
+                    return true;
+                }
+                catch (SqlException)
+                {
+                    return false;
+                }
+            }
         }
 
         public List<ConfigModel> Provide(string applicationName = null)
@@ -21,7 +37,7 @@ namespace GenericConfigMsSql
             var configList = new List<ConfigModel>();
             string queryString = string.Format("SELECT * FROM dbo.Config WHERE ApplicationName = '{0}'",applicationName);
 
-            using (SqlConnection connection = new SqlConnection(this._connetionString))
+            using (SqlConnection connection = new SqlConnection(this._connectionString))
             {
                 using (SqlCommand command = new SqlCommand(queryString, connection))
                 {

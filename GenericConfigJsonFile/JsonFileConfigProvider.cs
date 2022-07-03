@@ -19,6 +19,19 @@ namespace GenericConfigMsSql
             this._filename = filename;
         }
 
+        public bool IsAccessible()
+        {
+            try
+            {
+                string jsonString = ReadJsonFile(_filename);
+                return jsonString != null && jsonString.Length > 0;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
         public List<ConfigModel> Provide(string applicationName)
         {
             string jsonString = ReadJsonFile(_filename);
@@ -32,10 +45,7 @@ namespace GenericConfigMsSql
 
         protected string ReadJsonFile(string path)
         {
-            using (StreamReader reader = File.OpenText(path))
-            {
-                return reader.ReadToEnd();
-            }
+            return File.ReadAllText(path);
         }
     }
 }

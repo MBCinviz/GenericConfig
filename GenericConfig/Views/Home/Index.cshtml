@@ -4,42 +4,75 @@
 }
 
 
-<div>
+    <div>
 
-    <table class="table table-bordered">
+        <div class="d-flex justify-content-between align-items-center">
+            <a class="btn btn-success @(Model.IsProviderAccessible ? "" : "disabled")"
+               href="@Url.Action("form", "home")">
+                <i class="fa fa-add"></i> Add New Config
+            </a>
+            <div>
+                <select class="form-control" id="sel1" name="provider">
+                   <option>Json File Provider</option>
+                   <option>MsSql Database Provider</option>
+                </select>
+            </div>
+            <div>
+                Storage Status:
+                @if (Model.IsProviderAccessible)
+                {
+                    <strong class='text-success'>ONLINE</strong>
+                }
+                else
+                {
+                    <strong class='text-danger'>OFFLINE</strong>
+                }
 
-        <a class="btn btn-success" href="#"><i class="fa fa-add"></i> Add</a>
+            </div>
+        </div>
         <hr />
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Name</th>
-                <th>Type</th>
-                <th>Value</th>
-                <th>Is Active</th>
-                <th>Application Name</th>
-                <th>#</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (GenericConfigCore.ConfigModel c in Model.ConfigList)
-            {
+
+        <div class="text-right">
+            <small>@Model.ConfigList.Count records found.</small>
+        </div>
+        <table class="table table-bordered">
+            <thead>
                 <tr>
-                    <td>@c.Id</td>
-                    <td>@c.Name</td>
-                    <td>@c.Type</td>
-                    <td>@c.Value</td>
-                    <td>@c.IsActive</td>
-                    <td>@c.ApplicationName</td>
-                    <td>
-                        <a class="btn btn-warning btn-sm" href="#"><i class="fa fa-pen"></i></a>
-                        <a class="btn btn-danger text-white btn-sm" href="@Url.Action("remove", "home", new { name=c.Name })"><i class="fa fa-trash"></i></a>
-                    </td>
+                    <th>Id</th>
+                    <th>Name</th>
+                    <th>Type</th>
+                    <th>Value</th>
+                    <th>Is Active</th>
+                    <th>Application Name</th>
+                    <th>#</th>
                 </tr>
+            </thead>
+            <tbody>
+                @foreach (GenericConfigCore.ConfigModel c in Model.ConfigList)
+                {
+                    <tr>
+                        <td>@c.Id</td>
+                        <td>@c.Name</td>
+                        <td>@c.Type</td>
+                        <td>@c.Value</td>
+                        <td>@c.IsActive</td>
+                        <td>@c.ApplicationName</td>
+                        <td>
+                            <a class="btn btn-warning btn-sm" href="@Url.Action("form", "home", new { name=c.Name })"
+                               @(Model.IsProviderAccessible ? "" : "disabled")>
+                                <i class="fa fa-pen"></i>
+                            </a>
+                            <a class="btn btn-danger text-white btn-sm"
+                               href="@Url.Action("remove", "home", new { name=c.Name })"
+                               @(Model.IsProviderAccessible ? "" : "disabled")>
+                                <i class="fa fa-trash"></i>
+                            </a>
+                        </td>
+                    </tr>
 
-            }
-        </tbody>
-    </table>
+                }
+            </tbody>
+        </table>
 
 
-</div>
+    </div>

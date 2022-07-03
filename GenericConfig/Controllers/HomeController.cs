@@ -31,19 +31,43 @@ namespace GenericConfig.Controllers
 
             var editor = new JsonFileConfigEditor(AppDomain.CurrentDomain.BaseDirectory.ToString() + "Files/json.json");
             this.configManager = new GenericConfigManager("SERVICE-A", editor, refreshTime);
-
         }
 
         public IActionResult Index()
         {
-           
+
             var model = new HomeViewModel()
             {
-                ConfigList = configManager.GetConfigList()
+                ConfigList = configManager.GetConfigList(),
+                IsProviderAccessible = configManager.ConfigProvider.IsAccessible()
             };
 
             return View(model);
 
+        }
+
+        public IActionResult Form(string name)
+        {
+            return View(name == null || name.Length == 0 ? new ConfigModel() : configManager.getConfigModelByKey(name));
+        }
+
+        public IActionResult Save([FromForm] ConfigModel configModel)
+        {
+            configModel.ApplicationName = configManager.ApplicationName;
+
+            if (configManager.IsConfigExist(configModel.Name))
+            {
+                var currentConfig = configManager.getConfigModelByKey(configModel.Name);
+                configModel.Id = currentConfig.Id;
+                configManager.UpdateConfig(configModel);
+            }
+            else
+            {
+                configManager.AddConfig(configModel);
+            }
+
+
+            return RedirectToAction("index");
         }
 
         public IActionResult Remove(string name)

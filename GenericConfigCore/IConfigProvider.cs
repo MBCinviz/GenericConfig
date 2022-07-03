@@ -8,5 +8,6 @@ namespace GenericConfigCore
     {
         List<ConfigModel> Provide(string applicationName);
 
+        bool IsAccessible();
     }
 }

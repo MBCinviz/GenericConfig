@@ -1,0 +1,33 @@
+﻿@model GenericConfigCore.ConfigModel
+@{
+    ViewData["Title"] = "Form";
+}
+
+<form action="@Url.Action("save", "home")" method="post">
+    <div class="form-group">
+        <label for="name">Name:</label>
+        <input type="text" class="form-control" placeholder="Enter name" id="name" name="Name" value="@Model.Name" readonly="@(Model.Name != null)">
+    </div>
+
+    <div class="form-group">
+        <label for="sel1">Select type:</label>
+        <select class="form-control" id="sel1" name="Type">
+            @foreach (var t in Enum.GetValues(typeof(GenericConfigCore.ConfigTypeEnum)).Cast<GenericConfigCore.ConfigTypeEnum>())
+            {
+                <option name="@t" selected="@(Model.Type == t )">@t</option>
+            }
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="value">Value:</label>
+        <input type="text" class="form-control" placeholder="Enter value" id="value" name="Value" value="@Model.Value">
+    </div>
+
+    <div class="form-group form-check">
+        <label class="form-check-label">
+            <input class="form-check-input" type="checkbox" name="IsActive" value="true" checked="@(Model.IsActive)"> Is Active
+        </label>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>

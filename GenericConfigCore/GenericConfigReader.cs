@@ -10,15 +10,15 @@ namespace GenericConfigCore
     {
         public string ApplicationName
         {
-            get
-            {
-                return _applicationName;
-            }
+            get => _applicationName;
             private set { }
         }
+
+        public IConfigProvider ConfigProvider { get => _configProvider; private set { } }
+
         protected string _applicationName;
         protected int _refreshTimerIntervalInMs;
-        protected IConfigProvider _configProvider;
+        private IConfigProvider _configProvider;
         protected Dictionary<string, ConfigModel> _configDictionary;
 
         public GenericConfigReader(string applicationName, IConfigProvider configProvider, int refreshTimerIntervalInMs)
@@ -33,7 +33,14 @@ namespace GenericConfigCore
 
         protected void FetchConfig()
         {
-            _configDictionary = ConvertListToDictionary(this._configProvider.Provide(this._applicationName));
+            try
+            {
+                _configDictionary = ConvertListToDictionary(this._configProvider.Provide(this._applicationName));
+            }
+            catch (Exception)
+            {
+
+            }
         }
 
         protected Dictionary<string, ConfigModel> ConvertListToDictionary(List<ConfigModel> configs)
@@ -75,7 +82,7 @@ namespace GenericConfigCore
 
         public bool IsConfigExist(string key)
         {
-            return _configDictionary.ContainsKey(key);
+            return key != null && _configDictionary.ContainsKey(key);
         }
 
         public Dictionary<string, ConfigModel> GetConfigDictionary()

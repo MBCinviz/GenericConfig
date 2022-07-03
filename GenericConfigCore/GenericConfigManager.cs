@@ -13,32 +13,40 @@ namespace GenericConfigCore
             this._configEditor = configEditor;
         }
 
+        public ConfigModel getConfigModelByKey(string key)
+        {
+            return _configDictionary.GetValueOrDefault(key, null);
+        }
+
         public void AddConfig(ConfigModel configModel)
         {
-            if (IsConfigExist(configModel.Name))
+            if (IsConfigExist(configModel.Name) || !_configEditor.IsAccessible())
             {
                 return;
             }
+
             _configEditor.AddNewConfig(configModel);
             FetchConfig();
         }
 
         public void UpdateConfig(ConfigModel configModel)
         {
-            if (!IsConfigExist(configModel.Name))
+            if (!IsConfigExist(configModel.Name) || !_configEditor.IsAccessible())
             {
                 return;
             }
+
             _configEditor.UpdateConfig(configModel);
             FetchConfig();
         }
 
         public void DeleteConfig(string key, string applicationName)
         {
-            if (!IsConfigExist(key))
+            if (!IsConfigExist(key) || !_configEditor.IsAccessible())
             {
                 return;
             }
+
             _configEditor.DeleteConfig(key, applicationName);
             FetchConfig();
         }
