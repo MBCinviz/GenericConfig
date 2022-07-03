@@ -29,11 +29,31 @@ namespace GenericConfig.Controllers
             int refreshTime = 1000 * 15; // todo read from app config
 
             //var provider = new MsSqlConfigProvider(connectionString);
-            var provider = new JsonFileConfigProvider(AppDomain.CurrentDomain.BaseDirectory.ToString() + "Files/json.json");
-            var configReader = new GenericConfigReader("SERVICE-A", provider, refreshTime);
+            //var provider = new JsonFileConfigProvider(AppDomain.CurrentDomain.BaseDirectory.ToString() + "Files/json.json");
+            //var configReader = new GenericConfigReader("SERVICE-A", provider, refreshTime);
 
-            var configValue = configReader.GetValue<string>("SiteName");
-       
+            var editor = new JsonFileConfigEditor(AppDomain.CurrentDomain.BaseDirectory.ToString() + "Files/json.json");
+            var configManager = new GenericConfigManager("SERVICE-A", editor, refreshTime);
+
+
+            var cfg = new ConfigModel()
+            {
+                Id = "13",
+                Name = "TestKey4",
+                Value = "TestValue4",
+                IsActive = true,
+                Type = ConfigTypeEnum.STRING
+            };
+            configManager.AddConfig(cfg);
+            var configValue = configManager.GetValue<string>("TestKey4");
+            var a = configManager.GetConfigDictionary();
+
+            cfg.Value = "TestValue updated4";
+            configManager.UpdateConfig(cfg);
+            var b = configManager.GetConfigDictionary();
+
+            configManager.DeleteConfig("TestKey4");
+            var c = configManager.GetConfigDictionary();
 
             return View();
 

@@ -12,7 +12,7 @@ namespace GenericConfigMsSql
 
     public class JsonFileConfigProvider : IConfigProvider
     {
-        private string _filename;
+        protected string _filename;
 
         public JsonFileConfigProvider(string filename)
         {
@@ -25,10 +25,10 @@ namespace GenericConfigMsSql
 
             var configList = JsonConvert.DeserializeObject<List<ConfigModel>>(jsonString);
 
-            return configList.Where(c => c.IsActive).ToList();
+            return configList.ToList();
         }
 
-        private string ReadJsonFile(string path)
+        protected string ReadJsonFile(string path)
         {
             using (StreamReader reader = File.OpenText(path))
             {

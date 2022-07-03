@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace GenericConfigCore
 {
@@ -10,6 +12,7 @@ namespace GenericConfigCore
 
         public string Name { get; set; }
 
+        [JsonConverter(typeof(StringEnumConverter))]
         public ConfigTypeEnum Type { get; set; }
 
         public string Value { get; set; }

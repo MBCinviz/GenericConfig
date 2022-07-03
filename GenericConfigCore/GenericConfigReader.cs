@@ -36,14 +36,14 @@ namespace GenericConfigCore
 
         public T GetValue<T>(string key) where T : class
         {
-            if (!_configDictionary.ContainsKey(key))
+            if (!IsExist(key))
             {
                 return null;
             }
 
             var model = this._configDictionary[key];
 
-            if (model == null)
+            if (model == null || !model.IsActive)
             {
                 return null;
             }
@@ -56,9 +56,19 @@ namespace GenericConfigCore
             var valueList = new List<Object>();
             foreach (var item in _configDictionary)
             {
+                if (!item.Value.IsActive)
+                {
+                    continue;
+                }
+
                 valueList.Add(ParseValue(item.Value));
             }
             return valueList;
+        }
+
+        public bool IsExist(string key)
+        {
+            return _configDictionary.ContainsKey(key);
         }
 
         private object ParseValue(ConfigModel configModel)
@@ -73,6 +83,11 @@ namespace GenericConfigCore
                 ConfigTypeEnum.DATETIME => DateTime.Parse(configModel.Value),
                 _ => null,
             };
+        }
+
+        public Dictionary<string, ConfigModel> GetConfigDictionary()
+        {
+            return this._configDictionary;
         }
 
         protected async Task ScheduleForFetch()

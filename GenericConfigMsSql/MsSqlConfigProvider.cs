@@ -19,7 +19,7 @@ namespace GenericConfigMsSql
         public List<ConfigModel> Provide(string applicationName)
         {
             var configList = new List<ConfigModel>();
-            string queryString = string.Format("SELECT * FROM dbo.Config WHERE ApplicationName = '{0}' AND IsActive = 1",applicationName);
+            string queryString = string.Format("SELECT * FROM dbo.Config WHERE ApplicationName = '{0}'",applicationName);
 
             using (SqlConnection connection = new SqlConnection(this._connetionString))
             {
