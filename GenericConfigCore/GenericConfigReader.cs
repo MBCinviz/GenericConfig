@@ -37,9 +37,9 @@ namespace GenericConfigCore
             {
                 _configDictionary = ConvertListToDictionary(this._configProvider.Provide(this._applicationName));
             }
-            catch (Exception)
+            catch (Exception e)
             {
-
+                Console.WriteLine(e);
             }
         }
 
@@ -48,18 +48,18 @@ namespace GenericConfigCore
             return configs.ToDictionary(x => x.Name);
         }
 
-        public T GetValue<T>(string key) where T : class
+        public T GetValue<T>(string key)
         {
             if (!IsConfigExist(key))
             {
-                return null;
+                throw new ConfigNotFoundException();
             }
 
             var model = this._configDictionary[key];
 
             if (model == null || !model.IsActive || !model.ApplicationName.Equals(this._applicationName))
             {
-                return null;
+                throw new ConfigNotFoundException();
             }
 
             return (T)Convert.ChangeType(model.Value, typeof(T));

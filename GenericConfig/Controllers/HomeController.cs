@@ -16,21 +16,37 @@ namespace GenericConfig.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private GenericConfigManager configManager;
+        private string _configType;
 
         public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
 
+            setConfigManagerAsJsonFileReader();
+        }
+
+        private void setConfigManagerAsDB()
+        {
             //// TODO buraya ayz
-            //string connectionString = "asdasd"; // todo read from app config
+            string connectionString = "Server=DESKTOP-APHGH7T\\SQLEXPRESS;Database=dbGenericConfig;User ID=gConfig;Password=gConfig"; // todo read from app config
             int refreshTime = 1000 * 15; // todo read from app config
-
-            //var provider = new MsSqlConfigProvider(connectionString);
+            //connectionString
+            var provider = new MsSqlConfigProvider(connectionString);
             //var provider = new JsonFileConfigProvider(AppDomain.CurrentDomain.BaseDirectory.ToString() + "Files/json.json");
-            //var configReader = new GenericConfigReader("SERVICE-A", provider, refreshTime);
+            var configReader = new GenericConfigReader("SERVICE-A", provider, refreshTime);
+            var editor = new MsSqlConfigEditor(connectionString);
 
+            // var editor = new JsonFileConfigEditor(AppDomain.CurrentDomain.BaseDirectory.ToString() + "Files/json.json");
+            this.configManager = new GenericConfigManager("SERVICE-A", editor, refreshTime);
+            this._configType = "DB";
+        }
+
+        private void setConfigManagerAsJsonFileReader()
+        {
+            int refreshTime = 1000 * 15; // todo read from app config
             var editor = new JsonFileConfigEditor(AppDomain.CurrentDomain.BaseDirectory.ToString() + "Files/json.json");
             this.configManager = new GenericConfigManager("SERVICE-A", editor, refreshTime);
+            this._configType = "JSON";
         }
 
         public IActionResult Index()
@@ -39,7 +55,8 @@ namespace GenericConfig.Controllers
             var model = new HomeViewModel()
             {
                 ConfigList = configManager.GetConfigList(),
-                IsProviderAccessible = configManager.ConfigProvider.IsAccessible()
+                IsProviderAccessible = configManager.ConfigProvider.IsAccessible(),
+                ConfigType = this._configType
             };
 
             return View(model);
@@ -49,6 +66,22 @@ namespace GenericConfig.Controllers
         public IActionResult Form(string name)
         {
             return View(name == null || name.Length == 0 ? new ConfigModel() : configManager.getConfigModelByKey(name));
+        }
+
+        public void Change(string name)
+        {
+            switch (name)
+            {
+                case "JSON":
+                    setConfigManagerAsJsonFileReader();
+                    break;
+                case "DB":
+                    setConfigManagerAsDB();
+                    break;
+                default:
+                    setConfigManagerAsJsonFileReader();
+                    break;
+            }
         }
 
         public IActionResult Save([FromForm] ConfigModel configModel)

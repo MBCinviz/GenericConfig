@@ -9,7 +9,7 @@ namespace GenericConfigMsSql
 
     public class MsSqlConfigProvider : IConfigProvider
     {
-        private string _connectionString;
+        protected string _connectionString;
 
         public MsSqlConfigProvider(string connectionString)
         {

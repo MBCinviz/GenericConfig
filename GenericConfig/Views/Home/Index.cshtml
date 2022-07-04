@@ -12,9 +12,9 @@
                 <i class="fa fa-add"></i> Add New Config
             </a>
             <div>
-                <select class="form-control" id="sel1" name="provider">
-                   <option>Json File Provider</option>
-                   <option>MsSql Database Provider</option>
+                <select class="form-control" id="sel1" asp-for="ConfigType" name="provider">
+                    <option value="JSON">Json File Provider</option>
+                    <option value="DB">MsSql Database Provider</option>
                 </select>
             </div>
             <div>
@@ -31,6 +31,27 @@
             </div>
         </div>
         <hr />
+
+        @section Scripts{
+            <script>
+                $(function () {
+                    $("#sel1").change(function () {
+                        $.ajax({
+                            type: "Get",
+                            url: "/Home/Change?name=" + $(this).val(), 
+                            success: function (data) {
+                                var urlToRedirect= '@Url.Action("Index","Home")';
+                                window.location.href = urlToRedirect; //Redirect here
+                            },
+                            error: function (response) {
+                                console.log(response.responseText);
+                            }
+                        });
+                    });
+                });
+            </script>
+        }
+
 
         <div class="text-right">
             <small>@Model.ConfigList.Count records found.</small>

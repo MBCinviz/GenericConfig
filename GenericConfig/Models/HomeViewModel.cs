@@ -11,5 +11,7 @@ namespace GenericConfig.Models
         public List<ConfigModel> ConfigList { get; set; }
 
         public bool IsProviderAccessible { get; set; }
+
+        public string ConfigType { get; set; }
     }
 }
