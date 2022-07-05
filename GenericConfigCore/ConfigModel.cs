@@ -7,7 +7,7 @@ using Newtonsoft.Json.Converters;
 namespace GenericConfigCore
 {
     public class ConfigModel
-    {
+    {//MODEL GET AND SET
         public string Id { get; set; }
 
         public string Name { get; set; }

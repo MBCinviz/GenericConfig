@@ -9,7 +9,7 @@ using System.Linq;
 
 namespace GenericConfigMsSql
 {
-
+    //JSON FILE READ METHODS
     public class JsonFileConfigProvider : IConfigProvider
     {
         protected string _filename;

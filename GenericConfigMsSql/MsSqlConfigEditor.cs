@@ -6,7 +6,7 @@ using System.Text;
 
 namespace GenericConfigMsSql
 {
-
+    //MSSQL ADD,UPDATE AND DELETE METHODS
     public class MsSqlConfigEditor : MsSqlConfigProvider, IConfigEditor
     {
         public MsSqlConfigEditor(string connectionString) : base(connectionString)

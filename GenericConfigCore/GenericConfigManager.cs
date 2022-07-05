@@ -7,6 +7,8 @@ namespace GenericConfigCore
 {
     public class GenericConfigManager : GenericConfigReader
     {
+
+        //MODEL ADD,UPDATE AND DELETE METHODS
         protected IConfigEditor _configEditor;
         public GenericConfigManager(string applicationName, IConfigEditor configEditor, int refreshTimerIntervalInMs) : base(applicationName, configEditor, refreshTimerIntervalInMs)
         {

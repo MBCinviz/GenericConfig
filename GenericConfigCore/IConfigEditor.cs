@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 
 namespace GenericConfigCore
-{
+{//MODEL CONFIG METHOD
     public interface IConfigEditor : IConfigProvider
     {
         void AddNewConfig(ConfigModel configModel);

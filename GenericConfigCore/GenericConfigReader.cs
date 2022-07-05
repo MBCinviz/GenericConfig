@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace GenericConfigCore
 {
+    //MODEL PRODUCT
     public class GenericConfigReader
     {
         public string ApplicationName

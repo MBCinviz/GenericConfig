@@ -6,7 +6,7 @@ using System.Text;
 
 namespace GenericConfigMsSql
 {
-
+    //MSSQL READ METHODS
     public class MsSqlConfigProvider : IConfigProvider
     {
         protected string _connectionString;

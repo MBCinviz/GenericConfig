@@ -9,7 +9,7 @@ using System.Linq;
 
 namespace GenericConfigMsSql
 {
-
+    //JSON FILE ADD,UPDATE AND DELETE METHODS
     public class JsonFileConfigEditor : JsonFileConfigProvider, IConfigEditor
     {
         public JsonFileConfigEditor(string filename) : base(filename)

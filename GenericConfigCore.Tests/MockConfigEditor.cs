@@ -4,6 +4,7 @@ using System.Text;
 
 namespace GenericConfigCore.Tests
 {
+    
     class MockConfigEditor : MockConfigProvider, IConfigEditor
     {
         public void AddNewConfig(ConfigModel configModel)
